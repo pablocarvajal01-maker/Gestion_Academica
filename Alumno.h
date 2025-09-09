@@ -4,23 +4,28 @@ using namespace std;
 
 class Alumno{
     private:
-        string nombre;
+        string name;
         string apellido;
         string carrera;
-        string fechaDeIngreso;
+        int yearDeIngreso;
         int id;
         
     public:
     //registro
-    Alumno(string nombre,string apellido, string carrera,string fechaDeIngreso,int id); //contructor
+    Alumno(string name,string apellido, string carrera,int yearDeIngreso,int id); //contructor
     //busqueda
     int getId();//mostrar id
-    string getNombre();//mostrar nombre y apellido del alumno
+    
+    string getName();//mostrar nombre y apellido del alumno
+    string getApellido();
+    
     string getCarrera();//mostrar carrera y cuando ingreso
+    
     void mostrarAlumno();//mostrar toda la informacion del alumno
     //re registro
-    void setCarrera();//cambiar carrera
+    
+    void setCarrera(string nuevoProposito,int nuevoIngreso);//cambiar carrera
     void eliminarAlumno();
     
     
-}
+};
