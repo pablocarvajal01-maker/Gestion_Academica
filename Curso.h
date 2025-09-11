@@ -23,5 +23,5 @@ public:
     void getCupo();
     void setCupoActual(int valor);
     void mostrarInfo();
-
+};
 #endif

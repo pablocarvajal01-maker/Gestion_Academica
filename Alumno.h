@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ALUMNO_H
+#define ALUMNO_H
 #include <string>
 using namespace std;
 
@@ -9,23 +10,25 @@ class Alumno{
         string carrera;
         int yearDeIngreso;
         int id;
-        
+
     public:
     //registro
     Alumno(string name,string apellido, string carrera,int yearDeIngreso,int id); //contructor
+    ~Alumno();//destructor
     //busqueda
     int getId();//mostrar id
-    
+
     string getName();//mostrar nombre y apellido del alumno
     string getApellido();
-    
+
     string getCarrera();//mostrar carrera y cuando ingreso
-    
+
     void mostrarAlumno();//mostrar toda la informacion del alumno
     //re registro
-    
+
     void setCarrera(string nuevoProposito,int nuevoIngreso);//cambiar carrera
     void eliminarAlumno();
-    
-    
+
+
 };
+#endif

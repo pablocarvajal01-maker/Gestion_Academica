@@ -8,8 +8,12 @@ Alumno::Alumno(string name,string apellido, string carrera,int yearDeIngreso,int
     this->carrera=carrera;
     this->yearDeIngreso=yearDeIngreso;
     this->id=id;
-    
+
 }
+Alumno::~Alumno() {
+    cout << "Alumno eliminado: " << name << " " << apellido << endl;
+}
+
 int Alumno::getId(){
     return id;
 }
@@ -23,9 +27,11 @@ string Alumno::getCarrera(){
     return carrera;
 }
 void Alumno::mostrarAlumno(){
-    cout<<"-Alumno: "<<name<<" "<<apellido<<"\n-Carrera: "<<carrera<<"\n-Ingresado en: "<<yearDeIngreso<<"\nId: "<<id<<endl;
+    cout<<"-Alumno: "<<name<<" "<<apellido<<"\n-Curso: "<<carrera<<"\n-Ingresado en: "<<yearDeIngreso<<"\nId: "<<id<<endl;
 }
 void Alumno::setCarrera(string nuevoProposito, int nuevoIngreso){
     carrera=nuevoProposito;
-    yearDeIngreso=nuevoIngreso;
+    if (nuevoIngreso<yearDeIngreso) {
+        yearDeIngreso=nuevoIngreso;
+    }
 }

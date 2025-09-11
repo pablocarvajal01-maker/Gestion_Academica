@@ -10,7 +10,9 @@ Curso::Curso(string codigo, string nombre, string carrera, string profesor,int c
     this->cupoMax = cupoMax;
     this ->cupoActual = cupoActual;
 }
-
+Curso::~Curso() {
+    cout << "Curso eliminado: " << nombre<< " " << carrera << endl;
+}
 string Curso::getCodigo() {
     return codigo;
 }
