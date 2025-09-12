@@ -1,6 +1,7 @@
 #include "ListaAlumnos.h"
-#include <iostream>
-#include <vector>
+
+#include "Nodo.h"
+
 using namespace std;
 
 ListaAlumnos::ListaAlumnos() { cabeza = nullptr; }
@@ -9,49 +10,47 @@ ListaAlumnos::~ListaAlumnos() {
     NodoAlumno* actual = cabeza;
     while (actual != nullptr) {
         NodoAlumno* temp = actual;
-        actual = actual->siguiente;
-        delete temp->alumno;
+        actual = actual->getSiguiente();
         delete temp;
     }
 }
 
+
 void ListaAlumnos::agregar(Alumno* alumno) {
     NodoAlumno* nuevo = new NodoAlumno(alumno);
-    nuevo->siguiente = cabeza;
+    nuevo->setSiguiente(cabeza);
     cabeza = nuevo;
 }
-bool ListaAlumnos::buscarPorNombre(const vector<string> &palabras) {
+
+bool ListaAlumnos::buscarPorNombre(string palabras[], int cantidad) {
     NodoAlumno* actual = cabeza;
     bool encontrado = false;
 
     while (actual != nullptr) {
-        string nombreAlumno = actual->alumno->getName();
-        string apellidoAlumno = actual->alumno->getApellido();
+        string nombreAlumno = actual->getAlumno()->getName();
+        string apellidoAlumno = actual->getAlumno()->getApellido();
 
         // Recorremos todas las palabras ingresadas
-        for (const auto &p : palabras) {
-            if (p == nombreAlumno || p == apellidoAlumno) {
-                actual->alumno->mostrarAlumno();
+        for (int i = 0; i < cantidad; i++) {
+            if (palabras[i] == nombreAlumno || palabras[i] == apellidoAlumno) {
+                actual->getAlumno()->mostrarAlumno();
                 encontrado = true;
-                break; // una coincidencia basta, no necesitamos revisar más palabras para este alumno
+                break; // una coincidencia basta
             }
         }
 
-        actual = actual->siguiente;
+        actual = actual->getSiguiente();
     }
 
     return encontrado;
 }
 
-
-
-
 Alumno* ListaAlumnos::buscarPorId(int id) {
     NodoAlumno* actual = cabeza;
     while (actual != nullptr) {
-        if (actual->alumno->getId() == id)
-            return actual->alumno;
-        actual = actual->siguiente;
+        if (actual->getAlumno()->getId() == id)
+            return actual->getAlumno();
+        actual = actual->getSiguiente();
     }
     return nullptr;
 }
@@ -60,28 +59,28 @@ void ListaAlumnos::eliminar(int id) {
     NodoAlumno* actual = cabeza;
     NodoAlumno* anterior = nullptr;
 
-    while (actual != nullptr && actual->alumno->getId() != id) {
+    while (actual != nullptr && actual->getAlumno()->getId() != id) {
         anterior = actual;
-        actual = actual->siguiente;
+        actual = actual->getSiguiente();
     }
 
     if (actual == nullptr)
         return;
 
     if (anterior == nullptr) {
-        cabeza = actual->siguiente;
+        cabeza = actual->getSiguiente();
     } else {
-        anterior->siguiente = actual->siguiente;
+        anterior->setSiguiente(actual->getSiguiente());
     }
 
-    delete actual->alumno;
+    delete actual->getAlumno();
     delete actual;
 }
 
 void ListaAlumnos::mostrar() {
     NodoAlumno* actual = cabeza;
     while (actual != nullptr) {
-        actual->alumno->mostrarAlumno();
-        actual = actual->siguiente;
+        actual->getAlumno()->mostrarAlumno();
+        actual = actual->getSiguiente();
     }
 }

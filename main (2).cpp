@@ -3,10 +3,14 @@
 #include <sstream>
 #include <limits>
 #include "Alumno.h"
-#include "ListaAlumnos.h"
+#include "Nodo.h"
+
 using namespace std;
 int static id;
+
 ListaAlumnos listaAlumnos;
+ListaCursos listaCursos;
+
 
 void salida() {
     cout<<"Volviendo al menu anterior"<<endl;
@@ -83,7 +87,7 @@ void buscarId(){
         }
     }
 }
-void buscarNombre() {
+void buscarNombre(ListaAlumnos& listaAlumnos) {
     string linea;
     bool foundIt = false;
 
@@ -97,15 +101,24 @@ void buscarNombre() {
             break;
         }
 
-        istringstream nomCompleto(linea);
-        vector<string> palabras;
-        string palabra;
-        while (nomCompleto >> palabra) {
-            palabras.push_back(palabra);
+        // dividir la línea en palabras manualmente
+        string palabras[10]; // límite máximo de palabras permitidas
+        int cantidad = 0;
+        string palabra = "";
+
+        for (size_t i = 0; i <= linea.size(); i++) {
+            if (i == linea.size() || linea[i] == ' ') {
+                if (!palabra.empty()) {
+                    palabras[cantidad++] = palabra;
+                    palabra = "";
+                }
+            } else {
+                palabra += linea[i];
+            }
         }
 
-
-        foundIt = listaAlumnos.buscarPorNombre(palabras);
+        // buscar en la lista
+        foundIt = listaAlumnos.buscarPorNombre(palabras, cantidad);
         if (!foundIt) {
             cout << "Alumno no encontrado.\n";
         }
@@ -123,7 +136,7 @@ void buscarAlumno() {
                 buscarId();
                 break;
             case 2:
-                buscarNombre();
+                buscarNombre(listaAlumnos);
                 break;
             case 3:
                 salida();
@@ -145,9 +158,68 @@ void eliminarAlumno() {
 
 }
 
-void crearCurso(){}
-void buscarCurso() {}
-void eliminarCurso() {}
+void crearCurso() {
+    string codigo, nombre, carrera, profesor, linea;
+    int cupoMax, cupoActual;
+
+    cout << "Ingrese codigo del curso: ";
+    cin >> codigo;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    cout << "Ingrese nombre del curso: ";
+    getline(cin, nombre);
+
+    cout << "Ingrese carrera: ";
+    getline(cin, carrera);
+
+    cout << "Ingrese profesor: ";
+    getline(cin, profesor);
+
+    cout << "Ingrese cupo maximo: ";
+    while (!(cin >> cupoMax)) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Ingrese un numero valido para cupo maximo: ";
+    }
+
+    cout << "Ingrese cupo actual: ";
+    while (!(cin >> cupoActual) || cupoActual > cupoMax || cupoActual < 0) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Ingrese un numero válido para cupo actual (0-" << cupoMax << "): ";
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    Curso* nuevo = new Curso(codigo, nombre, carrera, profesor, cupoMax, cupoActual);
+    listaCursos.agregar(nuevo);
+
+    cout << "\nCurso creado exitosamente!\n";
+    nuevo->mostrarInfo();
+    cout << "-----------------------\n";
+}
+
+void buscarCurso() {
+    string codigo;
+    cout << "Ingrese el codigo del curso a buscar: ";
+    cin >> codigo;
+
+    Curso* curso = listaCursos.buscarPorCodigo(codigo);
+    if (curso != nullptr) {
+        curso->mostrarInfo();
+    } else {
+        cout << "Curso no encontrado.\n";
+    }
+}
+
+void eliminarCurso() {
+    string codigo;
+    cout << "Ingrese el codigo del curso a eliminar: ";
+    cin >> codigo;
+
+    listaCursos.eliminar(codigo);
+    cout << "Si el curso existia, fue eliminado.\n";
+}
+
 
 void inscribirAlumno() {}
 void expulsarAlumno() {}

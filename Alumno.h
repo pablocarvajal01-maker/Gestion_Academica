@@ -16,19 +16,38 @@ class Alumno{
     Alumno(string name,string apellido, string carrera,int yearDeIngreso,int id); //contructor
     ~Alumno();//destructor
     //busqueda
-    int getId();//mostrar id
+    int getId();
 
-    string getName();//mostrar nombre y apellido del alumno
+    string getName();
     string getApellido();
 
-    string getCarrera();//mostrar carrera y cuando ingreso
+    string getCarrera();
 
-    void mostrarAlumno();//mostrar toda la informacion del alumno
-    //re registro
+    void mostrarAlumno();
 
     void setCarrera(string nuevoProposito,int nuevoIngreso);//cambiar carrera
     void eliminarAlumno();
 
 
+};
+class Curso {
+private:
+    string codigo;
+    string nombre;
+    string carrera;
+    string profesor;
+    int cupoMax;
+    int cupoActual;
+
+public:
+    Curso(string codigo, string nombre, string carrera, string profesor, int cupoMax, int cupoActual);
+    ~Curso();
+
+    string getCodigo();
+    string getNombre();
+    string getCarrera();
+    void getCupo();
+    void setCupoActual(int valor);
+    void mostrarInfo();
 };
 #endif
