@@ -176,7 +176,7 @@ void crearCurso() {
     getline(cin, profesor);
 
     cout << "Ingrese cupo maximo: ";
-    while (!(cin >> cupoMax)) {
+    while (!(cin >> cupoMax)) { // validación de número
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Ingrese un numero valido para cupo maximo: ";
@@ -188,7 +188,7 @@ void crearCurso() {
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Ingrese un numero válido para cupo actual (0-" << cupoMax << "): ";
     }
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // limpiar buffer
 
     Curso* nuevo = new Curso(codigo, nombre, carrera, profesor, cupoMax, cupoActual);
     listaCursos.agregar(nuevo);
