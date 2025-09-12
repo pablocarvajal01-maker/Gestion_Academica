@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "Nodo.h"
 using namespace std;
@@ -30,32 +29,37 @@ Curso* ListaCursos::buscarPorCodigo(string codigo) {
     return nullptr;
 }
 
-void ListaCursos::eliminar(string codigo) {
+bool ListaCursos::eliminar(string codigo) {
     NodoCurso* actual = cabeza;
     NodoCurso* anterior = nullptr;
+
 
     while (actual != nullptr && actual->getCurso()->getCodigo() != codigo) {
         anterior = actual;
         actual = actual->getSiguiente();
     }
 
-    if (actual == nullptr) return;
+
+    if (actual == nullptr) return false;
 
     if (anterior == nullptr) {
+
         cabeza = actual->getSiguiente();
     } else {
         anterior->setSiguiente(actual->getSiguiente());
     }
 
     delete actual;
+    return true;
 }
+
 
 
 void ListaCursos::mostrar() {
     NodoCurso* actual = cabeza;
     while (actual != nullptr) {
         actual->getCurso()->mostrarInfo();
-        cout << "------------------" << endl;
+        cout << "~~~~~~~~~~~~~~~~~++~~~~~~~~~~~~~" << endl;
         actual = actual->getSiguiente();
     }
 }

@@ -8,8 +8,8 @@
 using namespace std;
 int static id;
 
-ListaAlumnos listaAlumnos;
-ListaCursos listaCursos;
+ListaAlumnos students;
+ListaCursos Ramos;
 
 
 void salida() {
@@ -53,33 +53,34 @@ void crearAlumno() {
     cout << "Ingrese carrera: ";
     getline(cin, carrera);
 
-    cout << "Ingrese año de ingreso: ";
-    while (!(cin >> ingreso)) { // validación de número
+    cout << "Ingrese ano de ingreso: ";
+    while (!(cin >> ingreso)) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Ingrese un año válido: ";
+        cout << "Ingrese un ano valido: ";
     }
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // limpiar buffer
 
     id++;
 
     Alumno* nuevo= new Alumno(nombre,apellido,carrera,ingreso,id);
-    listaAlumnos.agregar(nuevo);
+    students.agregar(nuevo);
     cout << "Alumno creado: \n"<<endl;
-    listaAlumnos.mostrar();
+    students.mostrar();
 
 }
+
 void buscarId(){
-    int id;
+    int identificacion;
     bool foundIt = false;
     while (!foundIt) {
         cout<<"\n \t(-1 para salir)\nIngrese la id del alumno: ";
-        errorMenu(id);
-        Alumno* encontrado = listaAlumnos.buscarPorId(id);
+        errorMenu(identificacion);
+        Alumno* encontrado = students.buscarPorId(identificacion);
         if (encontrado != nullptr) {
             encontrado->mostrarAlumno();
             foundIt=true;
-        } else if (id==-1)  {
+        } else if (identificacion==-1)  {
             foundIt=true;
             salida();
         }else{
@@ -87,7 +88,7 @@ void buscarId(){
         }
     }
 }
-void buscarNombre(ListaAlumnos& listaAlumnos) {
+void buscarNombre(ListaAlumnos& students) {
     string linea;
     bool foundIt = false;
 
@@ -101,8 +102,8 @@ void buscarNombre(ListaAlumnos& listaAlumnos) {
             break;
         }
 
-        // dividir la línea en palabras manualmente
-        string palabras[10]; // límite máximo de palabras permitidas
+
+        string palabras[10];
         int cantidad = 0;
         string palabra = "";
 
@@ -117,14 +118,13 @@ void buscarNombre(ListaAlumnos& listaAlumnos) {
             }
         }
 
-        // buscar en la lista
-        foundIt = listaAlumnos.buscarPorNombre(palabras, cantidad);
+
+        foundIt = students.buscarPorNombre(palabras, cantidad);
         if (!foundIt) {
             cout << "Alumno no encontrado.\n";
         }
     }
 }
-
 void buscarAlumno() {
     int opcion;
     do {
@@ -136,7 +136,7 @@ void buscarAlumno() {
                 buscarId();
                 break;
             case 2:
-                buscarNombre(listaAlumnos);
+                buscarNombre(students);
                 break;
             case 3:
                 salida();
@@ -147,24 +147,31 @@ void buscarAlumno() {
         }
     }while (opcion != 3);
 }
+
 void eliminarAlumno() {
-    int id;
+    int identificacion;
     do {
         cout << "(ingrese -1 para salir)\nIngrese id del alumno a eliminar: ";
-        errorMenu(id);
-        listaAlumnos.eliminar(id);
-    }while (id==-1);
+        errorMenu(identificacion);
+        students.eliminar(identificacion);
+    }while (identificacion==-1);
     salida();
 
 }
 
 void crearCurso() {
-    string codigo, nombre, carrera, profesor, linea;
+    string codigo, nombre, carrera, profesor;
     int cupoMax, cupoActual;
 
     cout << "Ingrese codigo del curso: ";
     cin >> codigo;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+
+    if (Ramos.buscarPorCodigo(codigo) != nullptr) {
+        cout << "Error: ya existe un curso con ese codigo.\n";
+        return;
+    }
 
     cout << "Ingrese nombre del curso: ";
     getline(cin, nombre);
@@ -175,54 +182,110 @@ void crearCurso() {
     cout << "Ingrese profesor: ";
     getline(cin, profesor);
 
-    cout << "Ingrese cupo maximo: ";
-    while (!(cin >> cupoMax)) { // validación de número
+    cout << "Ingrese cupo máximo: ";
+    while (!(cin >> cupoMax) || cupoMax <= 0) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Ingrese un numero valido para cupo maximo: ";
+        cout << "Ingrese un numero valido para cupo máximo: ";
     }
 
     cout << "Ingrese cupo actual: ";
-    while (!(cin >> cupoActual) || cupoActual > cupoMax || cupoActual < 0) {
+    while (!(cin >> cupoActual) || cupoActual < 0 || cupoActual > cupoMax) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Ingrese un numero válido para cupo actual (0-" << cupoMax << "): ";
+        cout << "Ingrese un numero valido para cupo actual (0 a " << cupoMax << "): ";
     }
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // limpiar buffer
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     Curso* nuevo = new Curso(codigo, nombre, carrera, profesor, cupoMax, cupoActual);
-    listaCursos.agregar(nuevo);
+    Ramos.agregar(nuevo);
 
     cout << "\nCurso creado exitosamente!\n";
     nuevo->mostrarInfo();
-    cout << "-----------------------\n";
-}
-
-void buscarCurso() {
-    string codigo;
-    cout << "Ingrese el codigo del curso a buscar: ";
-    cin >> codigo;
-
-    Curso* curso = listaCursos.buscarPorCodigo(codigo);
-    if (curso != nullptr) {
-        curso->mostrarInfo();
-    } else {
-        cout << "Curso no encontrado.\n";
-    }
 }
 
 void eliminarCurso() {
     string codigo;
     cout << "Ingrese el codigo del curso a eliminar: ";
     cin >> codigo;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    listaCursos.eliminar(codigo);
-    cout << "Si el curso existia, fue eliminado.\n";
+
+    if (Ramos.eliminar(codigo)) {
+        cout << "Curso eliminado exitosamente.\n";
+    } else {
+        cout << "Curso no encontrado.\n";
+    }
+
 }
 
+void buscarCurso() {
+    string codigo;
+    cout << "Ingrese el codigo del curso a buscar: ";
+    cin >> codigo;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-void inscribirAlumno() {}
-void expulsarAlumno() {}
+    Curso* curso = Ramos.buscarPorCodigo(codigo);
+    if (curso != nullptr) {
+        cout << "\nCurso encontrado:\n";
+        curso->mostrarInfo();
+    } else {
+        cout << "Curso no encontrado.\n";
+    }
+}
+
+void inscribirAlumno() {
+    int id;
+    string codigo;
+    cout << "Ingrese ID del alumno: ";
+    errorMenu(id);
+    cout << "Ingrese código del curso: ";
+    cin >> codigo;
+
+    Curso* curso = Ramos.buscarPorCodigo(codigo);
+    if (!curso) {
+        cout << "Curso no encontrado.\n" << endl;
+        return;
+    }
+    Alumno* alumno = students.buscarPorId(id);
+    if (!alumno) {
+        cout << "Alumno no encontrado.\n" << endl;
+        return;
+    }
+    if (curso->inscribirAlumno(alumno)) {
+        cout << "Alumno " << alumno->getName() << " inscrito en "
+             << curso->getNombre() << "\n" << endl;
+    } else {
+        cout << "No se pudo inscribir al alumno (curso lleno o error)\n" << endl;
+    }
+}
+
+void expulsarAlumno() {
+    int id;
+    string codigo;
+    cout << "Ingrese ID del alumno: ";
+    errorMenu(id);
+    cout << "Ingrese código del curso: ";
+    cin >> codigo;
+    Curso* curso = Ramos.buscarPorCodigo(codigo);
+    if (!curso) {
+        cout << "Curso no encontrado.\n" << endl;
+        return;
+    }
+    Alumno* alumno = students.buscarPorId(id);
+    if (!alumno) {
+        cout << "Alumno no encontrado.\n" << endl;
+        return;
+    }
+
+    if (curso->expulsarAlumno(id)) {
+        cout << "Alumno " << alumno->getName() << " expulsado del curso "
+             << curso->getNombre() << "\n" << endl;
+    } else {
+        cout << "No se pudo expulsar al alumno (quizás no estaba inscrito)\n" << endl;
+    }
+}
+
 
 void inscribirNotas(){}
 void modificarNotas() {}

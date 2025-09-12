@@ -76,8 +76,10 @@ public:
 
     void agregar(Curso* curso);
     Curso* buscarPorCodigo(string codigo);
-    void eliminar(string codigo);
+    bool eliminar(string codigo);
     void mostrar();
 };
+
+
 
 #endif

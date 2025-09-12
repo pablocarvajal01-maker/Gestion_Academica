@@ -1,4 +1,3 @@
-#include "ListaAlumnos.h"
 
 #include "Nodo.h"
 
@@ -30,12 +29,12 @@ bool ListaAlumnos::buscarPorNombre(string palabras[], int cantidad) {
         string nombreAlumno = actual->getAlumno()->getName();
         string apellidoAlumno = actual->getAlumno()->getApellido();
 
-        // Recorremos todas las palabras ingresadas
+
         for (int i = 0; i < cantidad; i++) {
             if (palabras[i] == nombreAlumno || palabras[i] == apellidoAlumno) {
                 actual->getAlumno()->mostrarAlumno();
                 encontrado = true;
-                break; // una coincidencia basta
+                break;
             }
         }
 
