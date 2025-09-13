@@ -1,20 +1,14 @@
-# Compilador y opciones
-CXX = g++
-CXXFLAGS = -std=c++17 -Wall
+CC = g++
+CFLAGS = -std=c++17 -Wall
+SRC = Alumno.cpp Curso.cpp Notas.cpp Nodo.cpp ListaAlumnos.cpp ListaCursos.cpp main.cpp
+OBJ = $(SRC:.cpp=.o)
+EXEC = main.exe
 
-# Nombre del ejecutable
-TARGET = main
+all: $(EXEC)
 
-# Todos los archivos fuente
-SRC = main.cpp Alumno.cpp Curso.cpp Notas.cpp Nodo.cpp ListaAlumnos.cpp ListaCursos.cpp
+$(EXEC): $(SRC)
+	$(CC) $(CFLAGS) -o $(EXEC) $(SRC)
 
-# Regla principal: compila todo
-all: $(TARGET)
-
-# Cómo generar el ejecutable
-$(TARGET): $(SRC)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRC)
-
-# Limpiar archivos compilados
 clean:
-	rm -f $(TARGET)
+	del $(OBJ) $(EXEC)
+
