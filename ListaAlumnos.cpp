@@ -1,4 +1,6 @@
 
+#include <iostream>
+
 #include "Nodo.h"
 
 using namespace std;
@@ -78,8 +80,10 @@ void ListaAlumnos::eliminar(int id) {
 
 void ListaAlumnos::mostrar() {
     NodoAlumno* actual = cabeza;
+    cout <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
     while (actual != nullptr) {
         actual->getAlumno()->mostrarAlumno();
         actual = actual->getSiguiente();
+        cout <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
     }
 }

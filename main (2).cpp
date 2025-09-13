@@ -4,10 +4,9 @@
 #include <limits>
 #include "Alumno.h"
 #include "Nodo.h"
+#include "Notas.h"
 
 using namespace std;
-int static id;
-
 ListaAlumnos students;
 ListaCursos Ramos;
 
@@ -31,7 +30,9 @@ void errorMenu(int &opcion) {
 
 
 void crearAlumno() {
+
     string nombre, apellido, carrera,linea;
+    static int id;
     int ingreso;
 
     cout << " Ingrese nombre: ";
@@ -59,17 +60,17 @@ void crearAlumno() {
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Ingrese un ano valido: ";
     }
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // limpiar buffer
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     id++;
 
     Alumno* nuevo= new Alumno(nombre,apellido,carrera,ingreso,id);
     students.agregar(nuevo);
+    cout <<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
     cout << "Alumno creado: \n"<<endl;
     students.mostrar();
 
 }
-
 void buscarId(){
     int identificacion;
     bool foundIt = false;
@@ -158,7 +159,6 @@ void eliminarAlumno() {
     salida();
 
 }
-
 void crearCurso() {
     string codigo, nombre, carrera, profesor;
     int cupoMax, cupoActual;
@@ -182,13 +182,13 @@ void crearCurso() {
     cout << "Ingrese profesor: ";
     getline(cin, profesor);
 
-    cout << "Ingrese cupo máximo: ";
+    cout << "Ingrese cupo maximo: ";
     while (!(cin >> cupoMax) || cupoMax <= 0) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Ingrese un numero valido para cupo máximo: ";
+        cout << "Ingrese un numero valido para cupo maximo: ";
     }
-
+    cin.clear();
     cout << "Ingrese cupo actual: ";
     while (!(cin >> cupoActual) || cupoActual < 0 || cupoActual > cupoMax) {
         cin.clear();
@@ -203,7 +203,6 @@ void crearCurso() {
     cout << "\nCurso creado exitosamente!\n";
     nuevo->mostrarInfo();
 }
-
 void eliminarCurso() {
     string codigo;
     cout << "Ingrese el codigo del curso a eliminar: ";
@@ -218,7 +217,6 @@ void eliminarCurso() {
     }
 
 }
-
 void buscarCurso() {
     string codigo;
     cout << "Ingrese el codigo del curso a buscar: ";
@@ -239,7 +237,7 @@ void inscribirAlumno() {
     string codigo;
     cout << "Ingrese ID del alumno: ";
     errorMenu(id);
-    cout << "Ingrese código del curso: ";
+    cout << "Ingrese codigo del curso: ";
     cin >> codigo;
 
     Curso* curso = Ramos.buscarPorCodigo(codigo);
@@ -259,13 +257,12 @@ void inscribirAlumno() {
         cout << "No se pudo inscribir al alumno (curso lleno o error)\n" << endl;
     }
 }
-
 void expulsarAlumno() {
     int id;
     string codigo;
     cout << "Ingrese ID del alumno: ";
     errorMenu(id);
-    cout << "Ingrese código del curso: ";
+    cout << "Ingrese codigo del curso: ";
     cin >> codigo;
     Curso* curso = Ramos.buscarPorCodigo(codigo);
     if (!curso) {
@@ -285,16 +282,184 @@ void expulsarAlumno() {
         cout << "No se pudo expulsar al alumno (quizás no estaba inscrito)\n" << endl;
     }
 }
+void inscribirNotas() {
+    int id;
+    string codigo;
+    float valor;
+
+    cout << "Ingrese id del alumno: ";
+    errorMenu(id);
+
+    Alumno* alumno = students.buscarPorId(id);
+    if (!alumno) {
+        cout << "Alumno no encontrado.\n";
+        return;
+    }
+
+    cout << "Ingrese codigo del curso: ";
+    cin >> codigo;
+
+    Curso* curso = Ramos.buscarPorCodigo(codigo);
+    if (!curso) {
+        cout << "Curso no encontrado.\n";
+        return;
+    }
+
+    cout << "Ingrese la nota(1,0 - 7,0): ";
+    while (!(cin >> valor) || valor < 1.0 || valor > 7.0) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Ingrese una nota valida (1,0 - 7,0): ";
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    alumno->agregarNota(curso, valor);
+    cout << "Nota registrada con exito para el curso " << curso->getNombre() << ".\n";
+}
+void modificarNotas() {
+    int id;
+    string codigo;
+    float nuevoValor;
+
+    cout << "Ingrese id del alumno: ";
+    errorMenu(id);
+
+    Alumno* alumno = students.buscarPorId(id);
+    if (!alumno) {
+        cout << "Alumno no encontrado.\n";
+        return;
+    }
+
+    cout << "Ingrese codigo del curso: ";
+    cin >> codigo;
+
+    Curso* curso = Ramos.buscarPorCodigo(codigo);
+    if (!curso) {
+        cout << "Curso no encontrado.\n";
+        return;
+    }
+
+    Notas* notaExistente = alumno->getNotas()->buscarPorCurso(curso);
+    if (!notaExistente) {
+        cout << "El alumno no tiene notas en este curso.\n";
+        return;
+    }
+
+    cout << "Ingrese la nueva nota: ";
+    while (!(cin >> nuevoValor) || nuevoValor < 1.0 || nuevoValor > 7.0) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Ingrese una nota valida (1.0 - 7.0): ";
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
 
-void inscribirNotas(){}
-void modificarNotas() {}
+    NodoValor* actual = notaExistente->getInicio();
+    if (actual) {
+        actual->valor = nuevoValor;
+        cout << "Ultima nota modificada en el curso " << curso->getNombre() << ".\n";
+    } else {
+        cout << "No hay notas para modificar.\n";
+    }
+}
 
-void reporteAlumnos(){}
-void reporteCurso(){}
-void promedioCurso(){}
-void promedioGeneral(){}
+void reporteAlumnos() {
+    string carrera;
+    cout << "Ingrese la carrera a buscar: ";
+    cin.ignore();
+    getline(cin, carrera);
 
+    NodoAlumno* alumnoActual = students.getTop();
+    bool encontrado = false;
+
+    while (alumnoActual) {
+        if (alumnoActual->getAlumno()->getCarrera() == carrera) {
+            alumnoActual->getAlumno()->mostrarAlumno();
+            cout << "---------------------\n";
+            encontrado = true;
+        }
+        alumnoActual = alumnoActual->getSiguiente();
+    }
+
+    if (!encontrado) {
+        cout << "No se encontraron alumnos en la carrera " << carrera << ".\n";
+    }
+}
+void reporteCurso() {
+    int idAlumno;
+    cout << "Ingrese ID del alumno: ";
+    while (!(cin >> idAlumno)) {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << "Ingrese un número válido: ";
+    }
+    cin.ignore(1000, '\n');
+    NodoAlumno* alumnoActual = students.getTop();
+    Alumno* alumnoEncontrado = nullptr;
+    while (alumnoActual) {
+        if (alumnoActual->getAlumno()->getId() == idAlumno) {
+            alumnoEncontrado = alumnoActual->getAlumno();
+            break;
+        }
+        alumnoActual = alumnoActual->getSiguiente();
+    }
+    if (!alumnoEncontrado) {
+        cout << "Alumno no encontrado.\n";
+        return;
+    }
+    NodoCursoAlumno* cursoActual = alumnoEncontrado->getCursos()->getCabeza();
+    if (!cursoActual) {
+        cout << "El alumno no está inscrito en ningún curso.\n";
+        return;
+    }
+    cout << "Cursos del alumno " << alumnoEncontrado->getName() << " "
+         << alumnoEncontrado->getApellido() << ":\n";
+    while (cursoActual) {
+        cout << "- " << cursoActual->curso->getNombre() << " (Código: "
+             << cursoActual->curso->getCodigo() << ")\n";
+        cursoActual = cursoActual->siguiente;
+    }
+}
+void promedioCurso() {
+    int id;
+    string codigo;
+
+    cout << "Ingrese id del alumno: ";
+    errorMenu(id);
+
+    Alumno* alumno = students.buscarPorId(id);
+    if (!alumno) {
+        cout << "Alumno no encontrado.\n";
+        return;
+    }
+
+    cout << "Ingrese codigo del curso: ";
+    cin >> codigo;
+
+    Curso* curso = Ramos.buscarPorCodigo(codigo);
+    if (!curso) {
+        cout << "Curso no encontrado.\n";
+        return;
+    }
+
+    float promedio = alumno->promedioCursoAlumno(curso);
+    cout << "Promedio del alumno en el curso " << curso->getNombre() << ": " << promedio << "\n";
+}
+void promedioGeneral() {
+    int id;
+
+    cout << "Ingrese id del alumno: ";
+    errorMenu(id);
+
+    Alumno* alumno = students.buscarPorId(id);
+    if (!alumno) {
+        cout << "Alumno no encontrado.\n";
+        return;
+    }
+
+    float promedio = alumno->promedioGeneralAlumno();
+    cout << "Promedio general del alumno: " << promedio << "\n";
+}
 
 
 

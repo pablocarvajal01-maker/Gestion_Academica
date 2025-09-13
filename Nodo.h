@@ -11,23 +11,17 @@ class NodoAlumno {
 private:
     Alumno* alumno;
     NodoAlumno* siguiente;
-
 public:
-    NodoAlumno(Alumno* alumno) {
-        this->alumno = alumno;
-        this->siguiente = nullptr;
-    }
-
+    NodoAlumno(Alumno* a) : alumno(a), siguiente(nullptr) {}
     ~NodoAlumno() {
         delete alumno;
     }
-
     Alumno* getAlumno() const { return alumno; }
-    void setAlumno(Alumno* a) { alumno = a; }
-
     NodoAlumno* getSiguiente() const { return siguiente; }
+    void setAlumno(Alumno* a) { alumno = a; }
     void setSiguiente(NodoAlumno* sig) { siguiente = sig; }
 };
+
 
 
 class ListaAlumnos {
@@ -43,6 +37,7 @@ public:
     bool buscarPorNombre(string palabras[], int cantidad);
     void eliminar(int id);
     void mostrar();
+    NodoAlumno* getTop() { return cabeza; }
 };
 
 class NodoCurso {

@@ -75,13 +75,20 @@ public:
     string getName() ;
     string getApellido() ;
     string getCarrera() ;
+    ListaNotas* getNotas() { return notas; }
     void mostrarAlumno() ;
     void setCarrera(string nuevoProposito,int nuevoIngreso) ;
     void eliminarAlumno() ;
     void inscribirCurso(Curso* c) { cursos.agregar(c); }
     void expulsarCurso(string codigoCurso) { cursos.eliminar(codigoCurso); }
+    ListaCursosAlumno* getCursos() { return &cursos; }
     void agregarNota(Curso* c, float valor) ;
     void modificarNota(Curso* c, float valor) ;
+    float promedioCursoAlumno(Curso* c);
+    float promedioGeneralAlumno();
+
+
+
 };
 
 #endif
