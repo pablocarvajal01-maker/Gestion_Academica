@@ -1,5 +1,8 @@
 comando para ejecutar programa
 
+g++ -std=c++17 -o main Alumno.cpp Curso.cpp Notas.cpp Nodo.cpp ListaAlumnos.cpp ListaCursos.cpp main.cpp
+
+
 git clone https://github.com/pablocarvajal01-maker/Gestion_Academica.git
 
 cd Gestion_Academica
