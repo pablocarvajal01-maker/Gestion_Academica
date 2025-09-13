@@ -12,11 +12,6 @@ Alumno::Alumno(string name, string apellido, string carrera, int yearDeIngreso, 
     this->notas = new ListaNotas();
 }
 
-Alumno::~Alumno() {
-    delete notas;
-    cout << "Alumno eliminado: " << name << " " << apellido << endl;
-}
-
 int Alumno::getId() { return id; }
 string Alumno::getName() { return name; }
 string Alumno::getApellido() { return apellido; }

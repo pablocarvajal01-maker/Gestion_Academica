@@ -5,7 +5,7 @@
 #include "Alumno.h"
 #include "Nodo.h"
 #include "Notas.h"
-
+int id;
 using namespace std;
 ListaAlumnos students;
 ListaCursos Ramos;
@@ -32,9 +32,7 @@ void errorMenu(int &opcion) {
 void crearAlumno() {
 
     string nombre, apellido, carrera,linea;
-    static int id;
     int ingreso;
-
     cout << " Ingrese nombre: ";
     getline(cin, linea);
 
@@ -154,8 +152,10 @@ void eliminarAlumno() {
     do {
         cout << "(ingrese -1 para salir)\nIngrese id del alumno a eliminar: ";
         errorMenu(identificacion);
+        if (identificacion==-1) break;
         students.eliminar(identificacion);
-    }while (identificacion==-1);
+
+    }while (true);
     salida();
 
 }

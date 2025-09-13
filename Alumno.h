@@ -2,6 +2,7 @@
 #define ALUMNO_H
 #include "Curso.h"
 #include <string>
+#include "Notas.h"
 using namespace std;
 
 
@@ -70,7 +71,10 @@ private:
 
 public:
     Alumno(string name,string apellido, string carrera,int yearDeIngreso,int id);
-    ~Alumno();
+    ~Alumno() {
+        delete notas;
+    }
+
     int getId();
     string getName() ;
     string getApellido() ;

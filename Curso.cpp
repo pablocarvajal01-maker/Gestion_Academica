@@ -3,8 +3,6 @@
 #include <iostream>
 using namespace std;
 
-
-
 Curso::Curso(string codigo, string nombre, string carrera, string profesor, int cupoMax, int cupoActual) {
     this->codigo = codigo;
     this->nombre = nombre;
@@ -18,22 +16,6 @@ Curso::~Curso() {
     cout << "-Curso eliminado: " << nombre << " " << carrera << endl;
 }
 
-string Curso::getCodigo() {
-    return codigo;
-}
-
-string Curso::getNombre() {
-    return nombre;
-}
-
-string Curso::getCarrera() {
-    return carrera;
-}
-
-void Curso::getCupo() {
-    cout << "-Curso " << nombre << ": " << cupoActual << " de " << cupoMax << endl;
-}
-
 void Curso::mostrarInfo() {
     cout << "-Curso: " << nombre
          << "\n-Codigo: " << codigo
@@ -42,7 +24,6 @@ void Curso::mostrarInfo() {
          << "\n-Cupos: " << cupoActual << " de " << cupoMax
          << endl;
 }
-
 bool Curso::inscribirAlumno(Alumno* a) {
     if (cupoActual >= cupoMax) {
         cout << "No hay cupo disponible para el alumno " << a->getName() << endl;
@@ -53,8 +34,6 @@ bool Curso::inscribirAlumno(Alumno* a) {
     cupoActual++;
     return true;
 }
-
-
 bool Curso::expulsarAlumno(int idAlumno) {
     NodoAlumnoCurso* actual = alumnos.getCabeza();
     while(actual) {
@@ -72,10 +51,6 @@ bool Curso::expulsarAlumno(int idAlumno) {
     }
     return false;
 }
-
-
-
-
 bool ListaAlumnosCurso::eliminar(int idAlumno) {
     NodoAlumnoCurso* actual = cabeza;
     NodoAlumnoCurso* anterior = nullptr;
@@ -95,3 +70,4 @@ bool ListaAlumnosCurso::eliminar(int idAlumno) {
     delete actual;
     return true;
 }
+

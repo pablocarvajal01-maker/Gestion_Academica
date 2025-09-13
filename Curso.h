@@ -5,19 +5,15 @@
 using namespace std;
 
 class Alumno;
-
-
 class NodoAlumnoCurso {
 public:
     Alumno* alumno;
     NodoAlumnoCurso* siguiente;
     NodoAlumnoCurso(Alumno* a) : alumno(a), siguiente(nullptr) {}
 };
-
 class ListaAlumnosCurso {
 private:
     NodoAlumnoCurso* cabeza;
-
 public:
     ListaAlumnosCurso() : cabeza(nullptr) {}
     ~ListaAlumnosCurso() {
@@ -29,16 +25,13 @@ public:
         }
     }
     NodoAlumnoCurso* getCabeza(){return cabeza;}
-
     void agregar(Alumno* a) {
         NodoAlumnoCurso* nuevo = new NodoAlumnoCurso(a);
         nuevo->siguiente = cabeza;
         cabeza = nuevo;
     }
-
     bool eliminar(int idAlumno);
 };
-
 class Curso {
 private:
     string codigo;
@@ -52,12 +45,13 @@ private:
 public:
     Curso(string codigo, string nombre, string carrera, string profesor, int cupoMax, int cupoActual);
     ~Curso();
+    string getCodigo() const { return codigo; }
+    string getNombre() const { return nombre; }
+    string getCarrera() const { return carrera; }
 
-    string getCodigo() ;
-    string getNombre() ;
-    string getCarrera();
-    void getCupo() ;
-    void setCupoActual(int valor) { this->cupoActual= cupoActual+ valor; }
+
+    int getCupo() const { return cupoActual; }
+    void setCupoActual(int incremento) { cupoActual += incremento; }
     void mostrarInfo() ;
 
     bool inscribirAlumno(Alumno* a);
