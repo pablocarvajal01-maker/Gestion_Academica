@@ -1,12 +1,10 @@
-comando para iniciar terminal
+comando para iniciar programa
 
-git clone https://github.com/pablocarvajal01-maker/Gestion_Academica.git
+git clone https://github.com/usuario/nombre-repo.git
 
+cd nombre-repo
 
-cd Gestion_Academica
-
-
-g++ -std=c++17 -o main Alumno.cpp Curso.cpp Notas.cpp Nodo.cpp ListaAlumnos.cpp ListaCursos.cpp main.cpp
+make
 
 ./main
 
