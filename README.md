@@ -1,12 +1,11 @@
-comando para iniciar programa
+comando para ejecutar programa
 
 git clone https://github.com/pablocarvajal01-maker/Gestion_Academica.git
-
 cd Gestion_Academica
 
 make
 
-./main
+main.exe
 
 make clean
 
