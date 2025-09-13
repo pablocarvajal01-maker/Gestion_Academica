@@ -1,8 +1,8 @@
 comando para iniciar programa
 
-git clone https://github.com/usuario/nombre-repo.git
+git clone https://github.com/pablocarvajal01-maker/Gestion_Academica.git
 
-cd nombre-repo
+cd Gestion_Academica
 
 make
 
