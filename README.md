@@ -1,6 +1,7 @@
 comando para ejecutar programa
 
 git clone https://github.com/pablocarvajal01-maker/Gestion_Academica.git
+
 cd Gestion_Academica
 
 make
@@ -8,6 +9,16 @@ make
 main.exe
 
 make clean
+
+o 
+
+git clone https://github.com/pablocarvajal01-maker/Gestion_Academica.git
+
+cd Gestion_Academica
+
+g++ -std=c++17 -o main Alumno.cpp Curso.cpp Notas.cpp Nodo.cpp ListaAlumnos.cpp ListaCursos.cpp main.cpp
+
+./main
 
 Pablo Carvajal 21.391.659-9
 
