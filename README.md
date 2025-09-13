@@ -8,6 +8,8 @@ make
 
 ./main
 
+make clean
+
 Pablo Carvajal 21.391.659-9
 
 Alumno.h / Alumno.cpp: Clase Alumno y gestión de cursos y notas.
