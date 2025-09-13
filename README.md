@@ -1,3 +1,5 @@
+comando para iniciar terminal
+
 git clone https://github.com/pablocarvajal01-maker/Gestion_Academica.git
 
 
